@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             miNodoBoton.classList.add('btn', 'btn-primary')
             miNodoBoton.textContent = '+'
             miNodoBoton.setAttribute('marcador', info.id)
-            // miNodoBoton.addEventListener('click', anadirProductosAlCarrito)
+            miNodoBoton.addEventListener('click', anadirProductosAlCarrito)
 
             // armar nuestra tarjetita de producto
             miNodoCardBody.appendChild(miNodoImagen)
@@ -107,18 +107,26 @@ document.addEventListener('DOMContentLoaded', () => {
             DOMcarrito.appendChild(miNodo)
 
             //creamos una funcion para mostrar el total del carrito
+            DOMtotal.textContent = calcularToal()
             // --------------------------------
 
         } )
+    }
 
-        function anadirProductosAlCarrito (evento){
-            // añadimos el nodo a nuestro carrito 
-            carrito.push(evento.target.getAttribute('marcador'))
-            // actualizar carrito
-            renderizarCarrito()
+    function anadirProductosAlCarrito (evento){
+        // añadimos el nodo a nuestro carrito 
+        carrito.push(evento.target.getAttribute('marcador'))
+        // actualizar carrito
+        renderizarCarrito()
+    }
 
-        }
-
+    function calcularToal() {
+        return carrito.reduce( (total, producto) => {
+            const miProducto = baseDeDatos.filter( (itemBaseDeDatos) => {
+                return itemBaseDeDatos.id === parseInt(producto)
+            } )
+            return total + miProducto[0].precio
+        }, 0 ).toFixed(2)
     }
 
     renderizarProductos()
